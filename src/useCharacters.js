@@ -35,14 +35,17 @@ export function useCharacters(page) {
 }
 
 export function useCharacter(id) {
+    console.log("El ID que llegó al hook es:", id);
   const [character, setCharacter] = useState(null);
+  const ruta = `${API_URL}/${id}`;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   useEffect(() => {
     const controller = new AbortController();
     async function loadCharacters() {
       try {
-        const response = await fetch(`${API_URL}/id`);
+        const response = await fetch(`${API_URL}/${id}`);
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
         setCharacter(data);
@@ -59,7 +62,7 @@ export function useCharacter(id) {
 
     loadCharacters();
     return () => controller.abort();
-  }, [page]);
+  }, [id]);
 
   return { character, loading, error };
 }

@@ -1,30 +1,11 @@
 import { createContext, useContext, useReducer } from "react";
-
-const estadoInicial = {
-  usuario: null,
-  autenticado: false,
-};
-
-// useReduce
-function authReducer(estado, accion) {
-  switch (accion.type) {
-    case "LOGIN":
-      return { usuario: accion.payload, autenticado: true };
-    case "LOGOUT":
-      return estadoInicial;
-    default:
-      break;
-  }
-}
+import { useCharacter } from "../useCharacters";
 
 // Sirve como lectura global para comunicar a toda la app
 const AuthContext = createContext(null);
 
 export function AuthProvider({children}){
-const [estado, dispatch] = useReducer(authReducer, estadoInicial);
-const login = (usuario) => dispatch({type: 'LOGIN', payload: usuario})
-const logout = () => dispatch({type: 'LOGOUT'})
-// const logout = () => dispatch({type: 'LOGOUT', payload:estadoInicial})
+  const { character, loading, error } = useCharacter(1);
 
 return (
     <AuthContext.Provider value={{...estado,login,logout}}>
